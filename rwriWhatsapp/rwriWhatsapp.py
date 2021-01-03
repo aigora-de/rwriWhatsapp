@@ -2,6 +2,14 @@ import re
 import networkx as nx
 import pandas as pd
 
+
+class WhatsAppParser:
+
+    @staticmethod
+    def run():
+        print("Hello World...")
+
+
 regex = re.compile(r'(\[\d{2}/\d{2}/\d{4}, \d{2}:\d{2}:\d{2}\]) (.*:) (.*$)')
 regex2 = re.compile(r'')
 g = nx.Graph()
