@@ -29,10 +29,19 @@ class WhatsAppParser:
             print(descriptive_message)
 
         df = pd.DataFrame(messages['chats'])
-        cloud_words = RWRIWordCloud().get_word_cloud(df['message'])
-        print(cloud_words)
+        df_by_author = df.groupby("author")
+        df_by_author.size().sort_values(ascending=False).plot(kind='bar', use_index=False, logy=False, xticks=None)
+        plt.xticks([])
+        plt.show()
+        df_by_author.size().sort_values(ascending=False)[0:50].plot(kind='bar', use_index=True, logy=False)
+        plt.show()
+
+        df_raphael = df[df['author'] == 'Arie Harza']
+        df_raphael.head()
+
+        cloud_words = RWRIWordCloud().get_word_cloud(df_raphael['message'])
         text = df['message'].str.cat(sep=' ')
-        word_cloud = WordCloud().generate(text)
+        word_cloud = WordCloud(max_words=200).generate(text=cloud_words)
         # Display the generated image:
         plt.imshow(word_cloud, interpolation='bilinear')
         plt.axis("off")
@@ -77,4 +86,4 @@ class RWRIWordCloud:
             if not word in self.stop_words:
                 cloud_words.append(word)
         #print(cloud_words)
-        return cloud_words
+        return ' '.join(cloud_words)
